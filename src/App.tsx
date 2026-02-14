@@ -5,6 +5,7 @@ import {
 } from "@tailwindplus/elements/react";
 import { useState } from "react";
 import "./App.css";
+import { ValueEditor } from "./ValueEditor";
 
 function Header({
   editMode,
@@ -30,7 +31,7 @@ function Header({
       <header className="bg-gray-800">
         <nav
           aria-label="Global"
-          className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+          className="mx-auto flex items-center justify-between p-6 lg:px-8"
         >
           <div className="flex lg:flex-1">
             <a href="#" className="-m-1.5 p-1.5">
@@ -76,7 +77,7 @@ function Header({
     <header className="bg-gray-800">
       <nav
         aria-label="Global"
-        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+        className="mx-auto flex items-center justify-between p-6 lg:px-8"
       >
         <div className="flex lg:flex-1">
           <a href="#" className="-m-1.5 p-1.5">
@@ -277,25 +278,17 @@ function TileSettings({
                     onChange={(e) => setColor(e.target.value)}
                     className="w-12 h-12 cursor-pointer rounded"
                   />
-                  <input
-                    type="number"
+                  <ValueEditor
                     value={span}
                     min={1}
                     max={6}
-                    onChange={(e) =>
-                      setSpan(Math.max(1, Math.min(6, +e.target.value || 1)))
-                    }
-                    className="w-12 h-12 cursor-pointer rounded"
+                    setterFunc={setSpan}
                   />
-                  <input
-                    type="number"
+                  <ValueEditor
                     value={vSpan}
                     min={1}
                     max={6}
-                    onChange={(e) =>
-                      setVSpan(Math.max(1, Math.min(6, +e.target.value || 1)))
-                    }
-                    className="w-12 h-12 cursor-pointer rounded"
+                    setterFunc={setVSpan}
                   />
                 </div>
               </div>
