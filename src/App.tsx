@@ -6,73 +6,15 @@ import {
 import { useState } from "react";
 import "./App.css";
 import { ValueEditor } from "./ValueEditor";
+import { Footer } from "./Footer";
 
 function Header({
   editMode,
   setEditMode,
-  tileAmount,
-  setTileAmount,
-  colAmount,
-  setColAmount,
-  rowAmount,
-  setRowAmount,
 }: {
   editMode: boolean;
   setEditMode: (value: boolean) => void;
-  tileAmount: number;
-  setTileAmount: (value: number) => void;
-  colAmount: number;
-  setColAmount: (value: number) => void;
-  rowAmount: number;
-  setRowAmount: (value: number) => void;
 }) {
-  if (editMode)
-    return (
-      <header className="bg-gray-800">
-        <nav
-          aria-label="Global"
-          className="mx-auto flex items-center justify-between p-6 lg:px-8"
-        >
-          <div className="flex lg:flex-1">
-            <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
-              <img
-                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-                alt=""
-                className="h-8 w-auto"
-              />
-            </a>
-          </div>
-          <div>
-            <input
-              type="number"
-              value={tileAmount}
-              min={1}
-              max={64}
-              onChange={(e) => setTileAmount(+e.target.value)}
-              className="w-12 h-6 cursor-pointer rounded"
-            />
-            <input
-              type="number"
-              value={colAmount}
-              min={1}
-              max={8}
-              onChange={(e) => setColAmount(+e.target.value)}
-              className="w-12 h-6 cursor-pointer rounded"
-            />
-            <input
-              type="number"
-              value={rowAmount}
-              min={1}
-              max={8}
-              onChange={(e) => setRowAmount(+e.target.value)}
-              className="w-12 h-6 cursor-pointer rounded"
-            />
-            <EditButton editMode={editMode} setEditMode={setEditMode} />
-          </div>
-        </nav>
-      </header>
-    );
   return (
     <header className="bg-gray-800">
       <nav
@@ -182,7 +124,7 @@ function ColorTiles({
   rowAmount: number;
 }) {
   return (
-    <div>
+    <div className="p-8 flex gap-4 flex-wrap flex-1 overflow-auto">
       <div
         className="grid gap-4 flex-wrap"
         style={{
@@ -307,18 +249,9 @@ export function App() {
   const [rowAmount, setRowAmount] = useState(6);
 
   return (
-    <div>
-      <Header
-        editMode={editMode}
-        setEditMode={setEditMode}
-        tileAmount={tileAmount}
-        setTileAmount={setTileAmount}
-        colAmount={colAmount}
-        setColAmount={setColAmount}
-        rowAmount={rowAmount}
-        setRowAmount={setRowAmount}
-      />
-      <div className="p-8 flex gap-4 flex-wrap">
+    <div className="h-screen flex flex-col overflow-hidden">
+      <Header editMode={editMode} setEditMode={setEditMode} />
+      <div className="p-8 flex gap-4 flex-wrap flex-1">
         <ColorTiles
           editMode={editMode}
           tileAmount={tileAmount}
@@ -326,6 +259,15 @@ export function App() {
           rowAmount={rowAmount}
         />
       </div>
+      <Footer
+        editMode={editMode}
+        tileAmount={tileAmount}
+        colAmount={colAmount}
+        rowAmount={rowAmount}
+        setTileAmount={setTileAmount}
+        setColAmount={setColAmount}
+        setRowAmount={setRowAmount}
+      />
     </div>
   );
 }
