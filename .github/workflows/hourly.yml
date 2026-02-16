@@ -1,0 +1,22 @@
+name: Hourly Cron Job
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+
+jobs:
+  update_top_games:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v6
+
+      - name: Nagvigate to backend dir
+        run: cd server
+
+      - name: Install dependancies
+        run: npm i
+
+      - name: Run game update scripts
+        run: npm run update_top_games
