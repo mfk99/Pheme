@@ -21,5 +21,6 @@ jobs:
 
       - name: Run game update scripts
         env:
-          MONGO_CONNECTION_STRING: ${{ secrets.MONGO_CONNECTION_STRING }}
+          MONGO_CI_USERNAME: ${{ secrets.MONGO_CI_USERNAME }}
+          MONGO_CI_PASSWORD: ${{ secrets.MONGO_CI_PASSWORD }}
         run: npm --prefix ./server run update_top_games

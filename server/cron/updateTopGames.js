@@ -27,7 +27,9 @@ function parseSteamTopGames(data) {
 }
 
 async function getGameCollection() {
-  const uri = process.env.MONGO_CONNECTION_STRING;
+  const mongoDBUsername = process.env.MONGO_CI_USERNAME;
+  const mongoDBPassword = process.env.MONGO_CI_PASSWORD;
+  const uri = `mongodb+srv://${mongoDBUsername}:${mongoDBPassword}@cluster0.wgv2yjv.mongodb.net/`;
   const client = new MongoClient(uri);
 
   let games = [];
@@ -54,7 +56,9 @@ function removeExistingGames(gameCollection, retrievedGames) {
 
 async function updateGameDB(data) {
   if (data.length == 0) return;
-  const uri = process.env.MONGO_CONNECTION_STRING;
+  const mongoDBUsername = process.env.MONGO_CI_USERNAME;
+  const mongoDBPassword = process.env.MONGO_CI_PASSWORD;
+  const uri = `mongodb+srv://${mongoDBUsername}:${mongoDBPassword}@cluster0.wgv2yjv.mongodb.net/`;
   const client = new MongoClient(uri);
 
   try {
