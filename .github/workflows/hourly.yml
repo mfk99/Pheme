@@ -17,9 +17,9 @@ jobs:
         run: cd server
 
       - name: Install dependancies
-        run: npm i
+        run: npm --prefix ./server i
 
       - name: Run game update scripts
         env:
           MONGO_CONNECTION_STRING: ${{ secrets.MONGO_CONNECTION_STRING }}
-        run: npm run update_top_games
+        run: npm --prefix ./server run update_top_games
