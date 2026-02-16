@@ -10,7 +10,8 @@
   "scripts": {
     "start": "node index.ts",
     "dev": "node index.ts",
-    "update_top_games": "node cron/updateTopGames.js"
+    "update_top_games": "node cron/updateTopGames.js",
+    "update_game_statistics": "node cron/getGameStats.js"
   },
   "dependencies": {
     "@types/node": "^25.2.3",

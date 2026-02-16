@@ -19,8 +19,14 @@ jobs:
       - name: Install dependancies
         run: npm --prefix ./server i
 
-      - name: Run game update scripts
+      - name: Run top game update scripts
         env:
           MONGO_CI_USERNAME: ${{ secrets.MONGO_CI_USERNAME }}
           MONGO_CI_PASSWORD: ${{ secrets.MONGO_CI_PASSWORD }}
         run: npm --prefix ./server run update_top_games
+
+      - name: Run game statistic update scripts
+        env:
+          MONGO_CI_USERNAME: ${{ secrets.MONGO_CI_USERNAME }}
+          MONGO_CI_PASSWORD: ${{ secrets.MONGO_CI_PASSWORD }}
+        run: npm --prefix ./server run update_game_statistics
