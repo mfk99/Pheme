@@ -14,6 +14,7 @@ dist-ssr
 
 node_modules
 .env
+.vite
 
 # Editor directories and files
 .vscode/*
