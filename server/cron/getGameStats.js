@@ -34,12 +34,13 @@ async function getGamePlayerCount(gameCollection) {
   return playerCounts;
 }
 
-async function updateGamePlayerData(playerCountData) {
+function timestampData(playerCountData) {
   const timeStamp = new Date();
-  const timeStampedPlayerCountData = playerCountData.map((x) => ({
-    ...x,
-    timeStamp: timeStamp,
-  }));
+  const timestampedData = { timeStamp: timeStamp, data: playerCountData };
+  return timestampedData;
+}
+
+async function updateGamePlayerData(playerCountData) {
   const mongoDBUsername = process.env.MONGO_CI_USERNAME;
   const mongoDBPassword = process.env.MONGO_CI_PASSWORD;
   const uri = `mongodb+srv://${mongoDBUsername}:${mongoDBPassword}@cluster0.wgv2yjv.mongodb.net/`;
@@ -48,7 +49,7 @@ async function updateGamePlayerData(playerCountData) {
   try {
     const steamDatabase = client.db("steam_usage_data");
     const gameCollection = steamDatabase.collection("Pheme-data");
-    await gameCollection.insertMany(timeStampedPlayerCountData);
+    await gameCollection.insertOne(playerCountData);
   } catch (error) {
     console.error(error);
   } finally {
@@ -60,7 +61,8 @@ async function main() {
   dotenv.config();
   const gameCollection = await getGameCollection();
   const playerCountData = await getGamePlayerCount(gameCollection);
-  await updateGamePlayerData(playerCountData);
+  const timestampedData = timestampData(playerCountData);
+  await updateGamePlayerData(timestampedData);
   process.exit(0);
 }
 
