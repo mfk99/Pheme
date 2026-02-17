@@ -4,11 +4,26 @@ import { getGameCollection, getGamePlayerStatistics } from "./mongo.js";
 
 import dotenv from "dotenv";
 const app = express();
+const allowedOrigins =
+  process.env.NODE_ENV == "production"
+    ? ["https://pheme-five.vercel.app/"]
+    : ["http://localhost:5173"];
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.indexOf(origin) === -1) {
+        return callback(new Error("Not allowed by CORS"));
+      }
+
+      return callback(null, true);
+    },
+    credentials: true,
   }),
 );
+
 const port = process.env.PORT || 4000;
 dotenv.config();
 
@@ -33,5 +48,5 @@ app.get("/steam_player_stats/:appId", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`App listening on port ${port}`);
 });

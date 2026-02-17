@@ -43,7 +43,6 @@ async function main() {
   const parsedData = parseSteamTopGames(data);
   const gameCollection = await getGameCollection();
   const diff = removeExistingGames(gameCollection, parsedData);
-  console.log("diff:", diff);
   await updateGameDB(diff);
   process.exit(0);
 }
