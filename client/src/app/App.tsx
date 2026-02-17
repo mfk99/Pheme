@@ -1,12 +1,7 @@
-import {
-  ElDialog,
-  ElDialogBackdrop,
-  ElDialogPanel,
-} from "@tailwindplus/elements/react";
 import { useState } from "react";
 import "./App.css";
-import { ValueEditor } from "./ValueEditor";
-import { Footer } from "./Footer";
+import { Footer } from "../utils/Footer";
+import { ColorTiles } from "../features/tile";
 
 function Header({
   editMode,
@@ -65,103 +60,6 @@ function EditButton({
         />
       </svg>
     </button>
-  );
-}
-
-function ColorTile({
-  id,
-  editMode,
-  color,
-  span,
-  vSpan,
-  setSelectedTileId,
-}: {
-  id: string;
-  editMode: boolean;
-  color: string;
-  span: number;
-  vSpan: number;
-  setSelectedTileId: (value: string) => void;
-}) {
-  const scale = 100;
-  const tileId = id;
-  if (editMode)
-    return (
-      <div
-        style={{
-          backgroundColor: color,
-          width: scale * span + 16 * (span - 1),
-          height: scale * vSpan + 16 * (vSpan - 1),
-          gridColumn: `span ${span}`,
-          gridRow: `span ${vSpan}`,
-        }}
-        className="border-2 border-amber-950 border-dashed rounded-lg transition-colors flex items-center justify-center"
-      >
-        <button
-          onClick={(e) => {
-            console.log(tileId);
-            setSelectedTileId(tileId);
-          }}
-        >
-          Edit
-        </button>
-      </div>
-    );
-  return (
-    <div
-      style={{
-        backgroundColor: color,
-        width: scale * span + 16 * (span - 1),
-        height: scale * vSpan + 16 * (vSpan - 1),
-        gridColumn: `span ${span}`,
-        gridRow: `span ${vSpan}`,
-      }}
-      className="border-2 border-amber-950 rounded-lg transition-colors flex items-center justify-center"
-    ></div>
-  );
-}
-
-function ColorTiles({
-  editMode,
-  tileAmount,
-  colAmount,
-  rowAmount,
-  tiles,
-  setTiles,
-  setSelectedTileId,
-}: {
-  editMode: boolean;
-  tileAmount: number;
-  colAmount: number;
-  rowAmount: number;
-  tiles: Array<{ id: string; color: string; span: number; vSpan: number }>;
-  setTiles: (
-    tiles: Array<{ id: string; color: string; span: number; vSpan: number }>,
-  ) => void;
-  setSelectedTileId: (value: string) => void;
-}) {
-  return (
-    <div className="p-8 flex gap-4 flex-wrap flex-1 overflow-auto">
-      <div
-        className="grid gap-4 flex-wrap"
-        style={{
-          gridTemplateColumns: `repeat(${colAmount}, minmax(0, 1fr))`,
-          gridTemplateRows: `repeat(${rowAmount}, minmax(0, 1fr))`,
-        }}
-      >
-        {tiles.map((tile) => (
-          <ColorTile
-            key={tile.id}
-            id={tile.id}
-            editMode={editMode}
-            color={tile.color}
-            span={tile.span}
-            vSpan={tile.vSpan}
-            setSelectedTileId={setSelectedTileId}
-          />
-        ))}
-      </div>
-    </div>
   );
 }
 

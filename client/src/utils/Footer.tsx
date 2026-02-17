@@ -1,3 +1,4 @@
+import { TileSettings } from "../features/tile";
 import { ValueEditor } from "./ValueEditor";
 
 export function Footer({
@@ -52,9 +53,9 @@ export function Footer({
               stroke="currentColor"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
               />
             </svg>
@@ -70,11 +71,11 @@ export function Footer({
             <svg
               className="h-10 w-10 text-gray-800"
               viewBox="0 -4 32 32"
-              stroke-width="2"
+              strokeWidth="2"
               stroke="currentColor"
               fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               {" "}
               <path stroke="none" d="M0 0h24v24H0z" />{" "}
@@ -92,11 +93,11 @@ export function Footer({
             <svg
               className="h-10 w-10 text-gray-800"
               viewBox="0 -4 32 32"
-              stroke-width="2"
+              strokeWidth="2"
               stroke="currentColor"
               fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               {" "}
               <path stroke="none" d="M0 0h24v24H0z" />{" "}
@@ -117,81 +118,5 @@ export function Footer({
         <div>asd</div>
       </div>
     </footer>
-  );
-}
-
-function TileSettings({
-  selectedTile,
-  updateTile,
-}: {
-  selectedTile:
-    | { id: string; color: string; span: number; vSpan: number }
-    | undefined;
-  updateTile: (
-    updates: Partial<{
-      id: string;
-      color: string;
-      span: number;
-      vSpan: number;
-    }>,
-  ) => void;
-}) {
-  if (!selectedTile) return <div>No tile selected!</div>;
-
-  return (
-    <div className="relative mt-6 flex-1 px-4 sm:px-6">
-      <input
-        type="color"
-        value={selectedTile.color}
-        onChange={(e) => updateTile({ color: e.target.value })}
-        className="w-12 h-12 cursor-pointer rounded"
-      />
-      <div className="flex items-center">
-        <svg
-          className="h-10 w-10 text-gray-800"
-          viewBox="0 -4 32 32"
-          stroke-width="2"
-          stroke="currentColor"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          {" "}
-          <path stroke="none" d="M0 0h24v24H0z" />{" "}
-          <polyline points="7 8 3 12 7 16" />{" "}
-          <polyline points="17 8 21 12 17 16" />{" "}
-          <line x1="3" y1="12" x2="21" y2="12" />
-        </svg>
-        <ValueEditor
-          value={selectedTile.span}
-          min={1}
-          max={6}
-          setterFunc={(span: number) => updateTile({ span })}
-        />
-      </div>
-      <div className="flex items-center">
-        <svg
-          className="h-10 w-10 text-gray-800"
-          viewBox="0 -4 32 32"
-          stroke-width="2"
-          stroke="currentColor"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          {" "}
-          <path stroke="none" d="M0 0h24v24H0z" />{" "}
-          <polyline points="8 7 12 3 16 7" />{" "}
-          <polyline points="8 17 12 21 16 17" />{" "}
-          <line x1="12" y1="3" x2="12" y2="21" />
-        </svg>
-        <ValueEditor
-          value={selectedTile.vSpan}
-          min={1}
-          max={6}
-          setterFunc={(vSpan: number) => updateTile({ vSpan })}
-        />
-      </div>
-    </div>
   );
 }
