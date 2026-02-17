@@ -51,3 +51,36 @@ export async function updateGameDB(data) {
     await client.close();
   }
 }
+
+async function getPlayerStatistics() {
+  const mongoDBUsername = process.env.MONGO_CI_USERNAME;
+  const mongoDBPassword = process.env.MONGO_CI_PASSWORD;
+  const uri = `mongodb+srv://${mongoDBUsername}:${mongoDBPassword}@cluster0.wgv2yjv.mongodb.net/`;
+  const client = new MongoClient(uri);
+
+  let data = [];
+  try {
+    const steamDatabase = client.db("steam_usage_data");
+    const dataCollection = steamDatabase.collection("Pheme-data");
+    data = await dataCollection.find({}).toArray();
+  } finally {
+    await client.close();
+  }
+  return data;
+}
+
+export async function getGamePlayerStatistics(appId) {
+  const playerData = await getPlayerStatistics();
+  const gameStatistics = [];
+  for (const dataEntry of playerData) {
+    const timeStamp = dataEntry.timeStamp;
+    const stats = dataEntry.data.find((o) => o.appId == appId);
+    if (stats) {
+      gameStatistics.push({
+        timeStamp: timeStamp,
+        ...stats,
+      });
+    }
+  }
+  return gameStatistics;
+}
