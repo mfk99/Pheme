@@ -1,8 +1,14 @@
 import express from "express";
+import cors from "cors";
 import { getGameCollection, getGamePlayerStatistics } from "./mongo.js";
 
 import dotenv from "dotenv";
 const app = express();
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  }),
+);
 const port = process.env.PORT || 4000;
 dotenv.config();
 
