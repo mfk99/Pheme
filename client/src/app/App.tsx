@@ -1,7 +1,8 @@
 import { useState } from "react";
 import "./App.css";
 import { Footer } from "../utils/Footer";
-import { ColorTiles } from "../features/tile";
+import { ColorTiles } from "../features/tiles/Tile";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function Header({
   editMode,
@@ -64,6 +65,7 @@ function EditButton({
 }
 
 export function App() {
+  const queryClient = new QueryClient();
   const [editMode, setEditMode] = useState(false);
   const [tileAmount, setTileAmount] = useState(10);
   const [colAmount, setColAmount] = useState(6);
@@ -79,33 +81,35 @@ export function App() {
   );
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
-      <Header editMode={editMode} setEditMode={setEditMode} />
-      <div className="p-8 flex gap-4 flex-wrap flex-1">
-        <ColorTiles
+    <QueryClientProvider client={queryClient}>
+      <div className="h-screen flex flex-col overflow-hidden">
+        <Header editMode={editMode} setEditMode={setEditMode} />
+        <div className="p-8 flex gap-4 flex-wrap flex-1">
+          <ColorTiles
+            editMode={editMode}
+            tileAmount={tileAmount}
+            colAmount={colAmount}
+            rowAmount={rowAmount}
+            tiles={tiles}
+            setTiles={setTiles}
+            setSelectedTileId={setSelectedTileId}
+          />
+        </div>
+        <Footer
           editMode={editMode}
           tileAmount={tileAmount}
           colAmount={colAmount}
           rowAmount={rowAmount}
+          setTileAmount={setTileAmount}
+          setColAmount={setColAmount}
+          setRowAmount={setRowAmount}
+          selectedTileId={selectedTileId}
+          setSelectedTileId={setSelectedTileId}
           tiles={tiles}
           setTiles={setTiles}
-          setSelectedTileId={setSelectedTileId}
         />
       </div>
-      <Footer
-        editMode={editMode}
-        tileAmount={tileAmount}
-        colAmount={colAmount}
-        rowAmount={rowAmount}
-        setTileAmount={setTileAmount}
-        setColAmount={setColAmount}
-        setRowAmount={setRowAmount}
-        selectedTileId={selectedTileId}
-        setSelectedTileId={setSelectedTileId}
-        tiles={tiles}
-        setTiles={setTiles}
-      />
-    </div>
+    </QueryClientProvider>
   );
 }
 
