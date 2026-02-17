@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import { Footer } from "../utils/Footer";
-import { ColorTiles } from "../features/tiles/Tile";
+import { Tiles } from "../features/tiles/Tile";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BlankTile, Tile } from "../features/tiles/types";
 
 function Header({
   editMode,
@@ -64,6 +65,14 @@ function EditButton({
   );
 }
 
+const createBlankTile = (id: string): BlankTile => ({
+  id,
+  color: "#ffffff",
+  span: 1,
+  vSpan: 1,
+  type: "blank",
+});
+
 export function App() {
   const queryClient = new QueryClient();
   const [editMode, setEditMode] = useState(false);
@@ -71,21 +80,32 @@ export function App() {
   const [colAmount, setColAmount] = useState(6);
   const [rowAmount, setRowAmount] = useState(6);
   const [selectedTileId, setSelectedTileId] = useState("0");
-  const [tiles, setTiles] = useState(
-    Array.from({ length: tileAmount }, (_, i) => ({
-      id: i.toString(),
-      color: "#ffffff",
-      span: 1,
-      vSpan: 1,
-    })),
+  const [tiles, setTiles] = useState<Tile[]>(
+    Array.from({ length: tileAmount }, (_, i) => createBlankTile(i.toString())),
   );
+
+  useEffect(() => {
+    setTiles((prevTiles) => {
+      if (tileAmount > prevTiles.length) {
+        // Add new tiles
+        const newTiles = Array.from(
+          { length: tileAmount - prevTiles.length },
+          (_, i) => createBlankTile((prevTiles.length + i).toString()),
+        );
+        return [...prevTiles, ...newTiles];
+      } else {
+        // Remove extra tiles
+        return prevTiles.slice(0, tileAmount);
+      }
+    });
+  }, [tileAmount]);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="h-screen flex flex-col overflow-hidden">
+      <div className="h-screen flex flex-col overflow-hidden bg-slate-100">
         <Header editMode={editMode} setEditMode={setEditMode} />
         <div className="p-8 flex gap-4 flex-wrap flex-1">
-          <ColorTiles
+          <Tiles
             editMode={editMode}
             tileAmount={tileAmount}
             colAmount={colAmount}
@@ -104,7 +124,6 @@ export function App() {
           setColAmount={setColAmount}
           setRowAmount={setRowAmount}
           selectedTileId={selectedTileId}
-          setSelectedTileId={setSelectedTileId}
           tiles={tiles}
           setTiles={setTiles}
         />

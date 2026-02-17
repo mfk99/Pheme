@@ -1,4 +1,5 @@
-import { TileSettings } from "../features/tile";
+import { TileSettings, TileTypeSettings } from "../features/tiles/Tile";
+import { BlankTile, SteamPlayersTile, Tile } from "../features/tiles/types";
 import { ValueEditor } from "./ValueEditor";
 
 export function Footer({
@@ -10,7 +11,6 @@ export function Footer({
   setColAmount,
   setRowAmount,
   selectedTileId,
-  setSelectedTileId,
   tiles,
   setTiles,
 }: {
@@ -22,18 +22,31 @@ export function Footer({
   setColAmount: (value: number) => void;
   setRowAmount: (value: number) => void;
   selectedTileId: string;
-  setSelectedTileId: (value: string) => void;
-  tiles: Array<{ id: string; color: string; span: number; vSpan: number }>;
-  setTiles: (
-    tiles: Array<{ id: string; color: string; span: number; vSpan: number }>,
-  ) => void;
+  tiles: Array<Tile>;
+  setTiles: (tiles: Array<Tile>) => void;
 }) {
   const selectedTile = tiles.find((t) => t.id === selectedTileId);
 
-  const updateTile = (updates: Partial<typeof selectedTile>) => {
+  const updateTile = (updates: Partial<BlankTile | SteamPlayersTile>) => {
     if (!selectedTile) return;
+
     setTiles(
-      tiles.map((t) => (t.id === selectedTileId ? { ...t, ...updates } : t)),
+      tiles.map((t) => {
+        if (t.id !== selectedTileId) return t;
+
+        switch (t.type) {
+          case "blank":
+            // TS knows t is BlankTile
+            return { ...t, ...updates } as BlankTile;
+
+          case "steam_players":
+            // TS knows t is SteamPlayersTile
+            return { ...t, ...updates } as SteamPlayersTile;
+
+          default:
+            return t;
+        }
+      }),
     );
   };
 
@@ -115,7 +128,12 @@ export function Footer({
         <div>
           <TileSettings selectedTile={selectedTile} updateTile={updateTile} />
         </div>
-        <div>asd</div>
+        <div>
+          <TileTypeSettings
+            selectedTile={selectedTile}
+            updateTile={updateTile}
+          />
+        </div>
       </div>
     </footer>
   );
