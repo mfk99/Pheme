@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 const app = express();
 const allowedOrigins =
   process.env.NODE_ENV == "production"
-    ? ["https://pheme-five.vercel.app/"]
+    ? ["https://pheme-five.vercel.app"]
     : ["http://localhost:5173"];
 
 app.use(
