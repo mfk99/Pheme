@@ -6,10 +6,10 @@
   "license": "ISC",
   "author": "",
   "type": "module",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
-    "start": "node index.ts",
-    "dev": "node index.ts",
+    "start": "node index.js",
+    "dev": "node index.js",
     "update_top_games": "node cron/updateTopGames.js",
     "update_game_statistics": "node cron/getGameStats.js"
   },
