@@ -1,5 +1,5 @@
-import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
+import { getGameCollection, updateGameDB } from "../mongo.js";
 
 async function getTopGames() {
   const params = {
@@ -26,23 +26,6 @@ function parseSteamTopGames(data) {
   return gameArr;
 }
 
-async function getGameCollection() {
-  const mongoDBUsername = process.env.MONGO_CI_USERNAME;
-  const mongoDBPassword = process.env.MONGO_CI_PASSWORD;
-  const uri = `mongodb+srv://${mongoDBUsername}:${mongoDBPassword}@cluster0.wgv2yjv.mongodb.net/`;
-  const client = new MongoClient(uri);
-
-  let games = [];
-  try {
-    const steamDatabase = client.db("steam_usage_data");
-    const gameCollection = steamDatabase.collection("games");
-    games = await gameCollection.find({}).toArray();
-  } finally {
-    await client.close();
-  }
-  return games;
-}
-
 function removeExistingGames(gameCollection, retrievedGames) {
   const diff = [];
   const gameCollectionIds = gameCollection.map((game) => game.gameId);
@@ -52,24 +35,6 @@ function removeExistingGames(gameCollection, retrievedGames) {
     }
   }
   return diff;
-}
-
-async function updateGameDB(data) {
-  if (data.length == 0) return;
-  const mongoDBUsername = process.env.MONGO_CI_USERNAME;
-  const mongoDBPassword = process.env.MONGO_CI_PASSWORD;
-  const uri = `mongodb+srv://${mongoDBUsername}:${mongoDBPassword}@cluster0.wgv2yjv.mongodb.net/`;
-  const client = new MongoClient(uri);
-
-  try {
-    const steamDatabase = client.db("steam_usage_data");
-    const gameCollection = steamDatabase.collection("games");
-    await gameCollection.insertMany(data);
-  } catch (error) {
-    console.error(error);
-  } finally {
-    await client.close();
-  }
 }
 
 async function main() {
