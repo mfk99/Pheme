@@ -112,6 +112,7 @@ export function App() {
             rowAmount={rowAmount}
             tiles={tiles}
             setTiles={setTiles}
+            selectedTileId={selectedTileId}
             setSelectedTileId={setSelectedTileId}
           />
         </div>

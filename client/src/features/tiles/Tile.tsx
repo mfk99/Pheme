@@ -13,6 +13,7 @@ type TilesProps = {
   rowAmount: number;
   tiles: Tile[];
   setTiles: (tiles: Tile[]) => void;
+  selectedTileId: string;
   setSelectedTileId: (value: string) => void;
 };
 
@@ -23,6 +24,7 @@ export function Tiles({
   rowAmount,
   tiles,
   setTiles,
+  selectedTileId,
   setSelectedTileId,
 }: TilesProps) {
   return (
@@ -39,6 +41,7 @@ export function Tiles({
             tile={tile}
             key={tile.id}
             editMode={editMode}
+            selectedTileId={selectedTileId}
             setSelectedTileId={setSelectedTileId}
           />
         ))}
@@ -50,14 +53,17 @@ export function Tiles({
 function TileObject({
   tile,
   editMode,
+  selectedTileId,
   setSelectedTileId,
 }: {
   tile: Tile;
   editMode: boolean;
+  selectedTileId: string;
   setSelectedTileId: (value: string) => void;
 }) {
   const scale = 100;
   const { id, color, span, vSpan } = tile;
+  const isSelected = selectedTileId === id;
   if (editMode)
     return (
       <div
@@ -68,7 +74,12 @@ function TileObject({
           gridColumn: `span ${span}`,
           gridRow: `span ${vSpan}`,
         }}
-        className="border-2 border-amber-950 border-dashed rounded-lg transition-colors flex items-center justify-center"
+        className={`border-2 rounded-lg transition-all flex items-center justify-center 
+         ${
+           isSelected
+             ? "border-blue-500 ring-4 ring-blue-300 shadow-xl scale-105"
+             : "border-amber-950 border-dashed rounded-lg transition-colors"
+         }`}
       >
         <button
           onClick={(e) => {
@@ -88,7 +99,7 @@ function TileObject({
         gridColumn: `span ${span}`,
         gridRow: `span ${vSpan}`,
       }}
-      className="border-2 border-amber-950 rounded-lg transition-colors flex items-center justify-center"
+      className="border-2 border-amber-950 rounded-lg transition-all flex items-center justify-center"
     >
       {tile.type === "steam_players" && (
         <GameStatsComponent appId={tile.appId} />
